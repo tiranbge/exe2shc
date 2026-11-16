@@ -155,7 +155,8 @@ stub/
   loader_x86.asm        x86 包装模式加载器
   loader_x86.bin        x86 加载器的预编译产物（已入库）
   build.bat/.sh         用 nasm 重新汇编上面两个 .bin
-  clr/extract_clr.py    从 CLR2SC 页面提取 6 个 CLR 引导桩
+  clr/extract_clr.py    从 CLR2SC 页面提取 6 个 CLR 引导桩（成品已入库）
+  clr/clr_*.bin         CLR 引导桩：x64/x86 × 默认/New AppDomain/APC
 tools/
   pack_b64_lznt1.py     Z85 / LZNT1 / 容器构造 / nasm 调用
   runner_x86.ps1        x86 产物的 PowerShell 运行脚本
@@ -169,19 +170,18 @@ samples/                本地测试样本（不入库）
 
 ## 首次使用 / 重新生成
 
-`stub/loader_x64.bin` / `stub/loader_x86.bin` 已预编译入库，clone 下来直接可用。只有改过
-`loader_*.asm` 之后才需要重新汇编（产物与源码逐字节可复现）：
+`stub/loader_x64.bin` / `stub/loader_x86.bin` 和 `stub/clr/clr_*.bin` 都已预编译入库，
+clone 下来直接可用。
 
-```bat
-cd stub && build.bat && cd ..
-```
+- 改过 `loader_*.asm` 之后重新汇编（产物与源码逐字节可复现）：
 
-只有 .NET 输入才需要 CLR 引导桩，6 个 `clr_*.bin` 是 CLR2SC 的派生物、不入库：
+  ```bat
+  cd stub && build.bat && cd ..
+  ```
 
-```bat
-:: 从 https://github.com/Laster-dev/CLR2SC 把 index.html 存为 stub\clr\clr2sc_index.html
-python stub\clr\extract_clr.py
-```
+- 需要重新生成 CLR 引导桩时（例如 CLR2SC 更新）：把
+  https://github.com/Laster-dev/CLR2SC 的 `index.html` 存为 `stub\clr\clr2sc_index.html`，
+  再运行 `python stub\clr\extract_clr.py`，会重新产出 6 个 `clr_*.bin`。
 
 x64 / .NET / 裸 shellcode 链路在每次打包时用 nasm 现场汇编解密桩，所以 nasm 是硬依赖；
 仓库自带的 `tools/nasm-2.16.03/nasm.exe` 优先使用，缺失则回退到 `PATH`。

@@ -6,8 +6,7 @@ samples/
 # 第三方汇编器（仓库自带一份方便离线使用）
 tools/nasm-2.16.03/
 
-# 第三方 CLR 引导桩与其来源页面，由 stub/clr/extract_clr.py 生成
-stub/clr/*.bin
+# CLR2SC 页面：提取 clr_*.bin 的唯一来源，仅本地保留
 stub/clr/clr2sc_index.html
 
 # ---------------------------------------------------------------- 构建产物
@@ -16,6 +15,9 @@ stub/clr/clr2sc_index.html
 # 预编译的加载桩入库，clone 下来就能用（改了 .asm 再用 stub/build.bat 重新生成）
 !stub/loader_x64.bin
 !stub/loader_x86.bin
+
+# CLR 引导桩同样入库，.NET 链路开箱即用（重新生成需要 stub/clr/clr2sc_index.html）
+!stub/clr/*.bin
 *.obj
 *.o
 *.pdb
