@@ -12,6 +12,10 @@ stub/clr/clr2sc_index.html
 
 # ---------------------------------------------------------------- 构建产物
 *.bin
+
+# 预编译的加载桩入库，clone 下来就能用（改了 .asm 再用 stub/build.bat 重新生成）
+!stub/loader_x64.bin
+!stub/loader_x86.bin
 *.obj
 *.o
 *.pdb

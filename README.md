@@ -151,8 +151,10 @@ stub/
   dec_b64_lznt1.asm     x64 解密桩：Z85 -> LZNT1 -> 建容器镜像 / 直接执行
   dec_b64_lznt1_x86.asm x86 解密桩
   loader_x64.asm        x64 常规加载器（裸 PE 模式、示例）
+  loader_x64.bin        上面这个加载器的预编译产物（已入库）
   loader_x86.asm        x86 包装模式加载器
-  build.bat/.sh         用 nasm 汇编 loader_x64.bin / loader_x86.bin
+  loader_x86.bin        x86 加载器的预编译产物（已入库）
+  build.bat/.sh         用 nasm 重新汇编上面两个 .bin
   clr/extract_clr.py    从 CLR2SC 页面提取 6 个 CLR 引导桩
 tools/
   pack_b64_lznt1.py     Z85 / LZNT1 / 容器构造 / nasm 调用
@@ -167,13 +169,17 @@ samples/                本地测试样本（不入库）
 
 ## 首次使用 / 重新生成
 
-```bat
-:: 1) 汇编 x86 包装用的加载桩（需要 PATH 里有 nasm）
-cd stub && build.bat && cd ..
+`stub/loader_x64.bin` / `stub/loader_x86.bin` 已预编译入库，clone 下来直接可用。只有改过
+`loader_*.asm` 之后才需要重新汇编（产物与源码逐字节可复现）：
 
-:: 2) 只有 .NET 输入才需要：准备 CLR 引导桩
-::    从 https://github.com/Laster-dev/CLR2SC 保存 index.html 为 stub\clr\clr2sc_index.html，
-::    再运行提取脚本，生成 6 个 clr_*.bin
+```bat
+cd stub && build.bat && cd ..
+```
+
+只有 .NET 输入才需要 CLR 引导桩，6 个 `clr_*.bin` 是 CLR2SC 的派生物、不入库：
+
+```bat
+:: 从 https://github.com/Laster-dev/CLR2SC 把 index.html 存为 stub\clr\clr2sc_index.html
 python stub\clr\extract_clr.py
 ```
 
